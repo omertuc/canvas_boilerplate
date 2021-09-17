@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            let animationBlue = 0;
+
+            function draw() {
+                let canvas = document.getElementById('canvas');
+                let ctx = canvas.getContext('2d');
+                let w = canvas.width;
+                let h = canvas.height;
+
+                const imageData = ctx.createImageData(w, h);
+                let data = imageData.data;
+
+                function setPixel(row, column, r, g, b, a) {
+                    pixelStart = (row * w + column) * 4;
+                    data[pixelStart + 0] = r;
+                    data[pixelStart + 1] = g;
+                    data[pixelStart + 2] = b;
+                    data[pixelStart + 3] = a;
+                }
+
+                let start = window.performance.now();                
+                for (let row = 0; row < h; row++) {
+                    for (let column = 0; column < w; column++) {
+                        let gradientRed = (row / h) * 255;
+                        setPixel(row, column, gradientRed, 120, animationBlue, 255);
+                    }
+                }
+                let end = window.performance.now();                
+
+                // Animation
+                animationBlue += 1;
+                if (animationBlue == 255) {
+                    animationBlue = 0;
+                }
+
+                ctx.putImageData(imageData, 0, 0);
+            }
+
+            setInterval(draw, 10);
+
+            window.onload = draw;
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" width="1000" height="1000">Your browser does not support the canvas element. What year is this?</canvas>
+    </body>
+</html>
